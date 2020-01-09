@@ -10,10 +10,20 @@ Let's assume you have a class with defined constants for different types.
 <?php
 class ProductInformation
 {
+    use \Medalink\Reflects\Constants;
+
+    /**
+    * Optional constant blacklist, anything in here will be filtered
+    */
+    public $reflectedConstantsBlacklist = [
+        'TEST',
+    ];
+
     const TYPE_OVERVIEW = 'OVERVIEW';
     const TYPE_SAFETY = 'SAFETY';
     const TYPE_WARRANTY = 'WARRANTY';
     const TYPE_PRODUCT_INFO = 'PRODUCT_INFO';
+    const TEST = 'TEST';
 }
 ```
 
@@ -45,7 +55,7 @@ Let's take a look at using this to populate a laravel nova options dropdown.
 ```php
 Select::make('Type')
     ->options(ProductInformation::getReflectedConstants('TYPE_'))
-    ->sortable()
+    ->sortable(),
 ```
 
 The `getReflectedConstants` supports a blacklist, a prefix, returning the prefix with the constant name, and a human readable toggle. Take a look at the source for more details on how to use these features.
