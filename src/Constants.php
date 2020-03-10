@@ -16,9 +16,9 @@ trait Constants
     /**
      * Get constants for our class, supports a prefix limitation and a blacklist
      *
-     * @param  string|null  $prefix
-     * @param  bool  $asHumanReadable
-     * @param  bool  $withoutPrefix
+     * @param string|null $prefix
+     * @param bool $asHumanReadable
+     * @param bool $withoutPrefix
      * @return array
      */
     public static function getReflectedConstants(?string $prefix = null, bool $asHumanReadable = true, bool $withoutPrefix = true): array
@@ -45,12 +45,12 @@ trait Constants
                     if (Str::startsWith($constant, $prefix)) {
                         // We also remove our prefix
                         if ($withoutPrefix) {
-                            $matches[] = str_replace($prefix, '', $constant);
+                            $matches[static::lookupConstant($constant)] = str_replace($prefix, '', $constant);
 
                             continue;
                         }
 
-                        $matches[] = $constant;
+                        $matches[static::lookupConstant($constant)] = $constant;
                     }
                 }
 
@@ -67,9 +67,9 @@ trait Constants
             return $constants;
         }
 
-        // Loop our roles and make them human readable if requested
+        // Loop our constants and make them human readable if requested
         foreach ($constants as $constant) {
-            $humanFormattedRoles[$constant] = ucwords(strtolower(str_replace('_', ' ', $constant)));
+            $humanFormattedRoles[] = ucwords(strtolower(str_replace('_', ' ', $constant)));
         }
 
 
@@ -78,13 +78,26 @@ trait Constants
     }
 
     /**
-     * @param  string  $constant
+     * @param string $constant
      * @return string
      */
     public static function lookupConstant(string $constant): string
     {
         $constantName = strtoupper(str_replace(' ', '_', $constant));
 
-        return constant('static::'.$constantName);
+        return constant('static::' . $constantName);
+    }
+
+    /**
+     * @param string $constant
+     * @return string
+     */
+    public static function lookupConstants(array $constants): array
+    {
+        foreach ($constants as $constant) {
+            $matches[] = static::lookupConstant($constant);
+        }
+
+        return $matches;
     }
 }
