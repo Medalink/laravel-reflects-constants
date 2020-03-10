@@ -50,7 +50,7 @@ trait Constants
                             continue;
                         }
 
-                        $matches = $constant;
+                        $matches[] = $constant;
                     }
                 }
 
