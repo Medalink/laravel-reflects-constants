@@ -1,7 +1,7 @@
 # laravel-reflects-constants
 A small helper package that aids in the retrieval of class constants of models.
 
-`composer require medalink/laravel-reflects-constants dev-master`
+`composer require medalink/laravel-reflects-constants`
 
 ### How to use
 Let's assume you have a class with defined constants for different types.
